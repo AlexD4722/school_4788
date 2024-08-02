@@ -16,4 +16,8 @@ public class StudentQueryServiceImpl implements StudentQueryService {
     public List<StudentDto> FindAll() {
         return studentRepoCustomImpl.FindAll();
     }
+    @Override
+    public StudentDto FindByCode(String code) {
+        return studentRepoCustomImpl.FindByCode(code);
+    }
 }

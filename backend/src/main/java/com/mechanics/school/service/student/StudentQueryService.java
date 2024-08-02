@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface StudentQueryService {
     List<StudentDto> FindAll();
+    StudentDto FindByCode(String code);
 }

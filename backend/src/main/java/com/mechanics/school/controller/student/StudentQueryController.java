@@ -35,5 +35,21 @@ public class StudentQueryController {
         }
     }
 
-
+    @GetMapping("/{code}")
+    public ResponseEntity<Object> getDetailStudent(@PathVariable String code) {
+        try {
+            return ResponseHandler.responseBuilder(
+                    "Student found",
+                    HttpStatus.OK.value(),
+                    studentQueryService.FindByCode(code)
+            );
+        } catch (Exception e) {
+            LoggerUtils.LOGGER.error("Error occurred during finding StudentDto by code.", e);
+            return ResponseHandler.responseBuilder(
+                    "Error occurred during finding StudentDto by code.",
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null
+            );
+        }
+    }
 }

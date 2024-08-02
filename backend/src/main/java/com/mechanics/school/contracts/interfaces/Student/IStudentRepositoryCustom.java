@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IStudentRepositoryCustom {
     List<StudentDto> FindAll();
+    StudentDto FindByCode(String code);
 }

@@ -11,12 +11,28 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
-public class StudentRepoCustomImpl  implements IStudentRepositoryCustom {
+public class StudentRepoCustomImpl implements IStudentRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public List<StudentDto> FindAll() {
+        CriteriaQuery<StudentDto> query = createStudentDtoQuery();
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    @Override
+    public StudentDto FindByCode(String code) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<StudentDto> query = createStudentDtoQuery();
+        Root<Student> root = (Root<Student>) query.getRoots().iterator().next();
+        query.where(cb.equal(root.get("code"), code));
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
+    private CriteriaQuery<StudentDto> createStudentDtoQuery() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<StudentDto> query = cb.createQuery(StudentDto.class);
         Root<Student> root = query.from(Student.class);
@@ -31,6 +47,6 @@ public class StudentRepoCustomImpl  implements IStudentRepositoryCustom {
                 root.get("image").alias("image"),
                 root.get("address").alias("address")
         );
-        return entityManager.createQuery(query).getResultList();
+        return query;
     }
 }
