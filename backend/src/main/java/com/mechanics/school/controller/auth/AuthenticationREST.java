@@ -38,7 +38,6 @@ public class AuthenticationREST {
     public Mono<ResponseEntity<Object>> login(@RequestBody AuthRequest ar) {
         return userQueryService.findAuthUserDtoByUser_name(ar.getUserName())
                 .filter(userDetails -> passwordEncoder.encode(ar.getPassword()).equals(userDetails.getPassword()))
-                .filter(userDetails -> ar.getPassword().equals(userDetails.getPassword()))
                 .map(userDetails -> ResponseHandler.responseBuilder(
                         "login successful",
                         HttpStatus.OK.value(),
